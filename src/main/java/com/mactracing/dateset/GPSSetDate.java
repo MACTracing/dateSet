@@ -1,6 +1,9 @@
 package com.mactracing.dateset;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Enumeration;
 
 import gnu.io.CommPort;
@@ -13,7 +16,7 @@ public class GPSSetDate {
 	static CommPort serialPort;
 	static InputStream input;
 	static boolean fechaEstablecida=false;
-	public static void main(String[] args) throws UnsupportedCommOperationException, PortInUseException, IOException {
+	public static void main(String[] args) throws UnsupportedCommOperationException, PortInUseException, IOException, InterruptedException {
 
 		 lista = CommPortIdentifier.getPortIdentifiers();
 		 while (lista.hasMoreElements())
@@ -47,9 +50,9 @@ public class GPSSetDate {
 		    	 			{
 		    	 				final String hora = campos[1].replace(".00", "").substring(0, 2)+":"+campos[1].replace(".00", "").substring(2, 4)+":"+campos[1].replace(".00", "").substring(4, 6);
 		    	 				final String fecha = "20"+campos[9].substring(4, 6)+"-"+campos[9].substring(2, 4)+"-"+campos[9].substring(0, 2);
-		    	 				final String comandoAjuste = "date --set \""+fecha+" "+hora+"\"";
-		    	 				Runtime.getRuntime().exec(comandoAjuste);
-		    	 				fechaEstablecida= true;
+		    	 				final String comandoAjuste = fecha+" "+hora;		    	 					
+		    	 				Runtime.getRuntime().exec(new String[]{"date","--set",comandoAjuste});
+		    	 				fechaEstablecida=true;
 		    	 			}
 		    	 
 		    	 	}
